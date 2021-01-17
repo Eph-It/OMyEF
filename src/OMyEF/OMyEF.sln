@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMyEF", "OMyEF\OMyEF.csproj", "{6C6A5AD6-D798-48F6-BAF0-B41E7683CEE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMyEFTests", "OMyEFTests\OMyEFTests.csproj", "{5215E36C-6173-41D9-B15B-BF581AF69468}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C6A5AD6-D798-48F6-BAF0-B41E7683CEE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6A5AD6-D798-48F6-BAF0-B41E7683CEE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6A5AD6-D798-48F6-BAF0-B41E7683CEE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6A5AD6-D798-48F6-BAF0-B41E7683CEE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5215E36C-6173-41D9-B15B-BF581AF69468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5215E36C-6173-41D9-B15B-BF581AF69468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5215E36C-6173-41D9-B15B-BF581AF69468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5215E36C-6173-41D9-B15B-BF581AF69468}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {680F264B-FD6D-450C-B2F5-F7F947E00C75}
+	EndGlobalSection
+EndGlobal
