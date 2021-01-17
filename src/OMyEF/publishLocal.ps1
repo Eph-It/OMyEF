@@ -20,6 +20,8 @@ catch{
 
 $ProjectLocation = "$PSScriptRoot\OMyEF\OMyEF.csproj"
 
+dotnet build -c Release $ProjectLocation
+
 dotnet pack -c Release $ProjectLocation
 
 $nupkgFiles = Get-ChildItem "$PSScriptRoot\OMyEF\bin\Release" -Filter '*.nupkg'

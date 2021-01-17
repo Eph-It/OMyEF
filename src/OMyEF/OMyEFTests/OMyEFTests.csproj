@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ODataEFGenerator\OMyEF.csproj" />
+    <ProjectReference Include="..\OMyEF\OMyEF.csproj" />
   </ItemGroup>
 
 </Project>
