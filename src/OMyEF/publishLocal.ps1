@@ -18,11 +18,11 @@ catch{
     $NugetLocation = $FileLocation
 }
 
-$ProjectLocation = "$PSScriptRoot\ODataEFGenerator\ODataEFGenerator.csproj"
+$ProjectLocation = "$PSScriptRoot\OMyEF\OMyEF.csproj"
 
 dotnet pack -c Release $ProjectLocation
 
-$nupkgFiles = Get-ChildItem "$PSScriptRoot\ODataEFGenerator\bin\Release" -Filter '*.nupkg'
+$nupkgFiles = Get-ChildItem "$PSScriptRoot\OMyEF\bin\Release" -Filter '*.nupkg'
 
 $LocalNugetFolder = "$env:USERPROFILE\LocalNugetFiles"
 

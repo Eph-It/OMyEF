@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <PackageId>ODataEFGenerator</PackageId>
+    <PackageId>OMyEF</PackageId>
     <Version>0.1.2</Version>
     <Authors>Ryan Ephgrave</Authors>
     <Company>Eph-It</Company>
