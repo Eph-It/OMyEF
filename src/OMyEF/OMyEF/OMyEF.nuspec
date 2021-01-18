@@ -3,11 +3,11 @@
     <metadata>
         <id>OMyEF</id>
         <title>OMyEF - Automated OData Controller for Entity Framework</title>
-        <version>0.1.11</version>
+        <version>0.1.12</version>
         <authors>Ryan Ephgrave</authors>
         <copyright>&#169; EphIt. All rights reserved.</copyright>
         <description>Automatically build OData controllers from Entity Framework DbSets with Code Generation</description>
-        <tags>Microsoft AspNetCore WebApi OData EntityFramework</tags>
+        <tags>AspNetCore WebApi OData EntityFramework</tags>
 
         <dependencies>
         <group targetFramework=".NETStandard2.0">
