@@ -28,10 +28,11 @@ namespace OMyEF
             }
         }
         ";
+        
         public void Execute(GeneratorExecutionContext context)
         {
             context.AddSource("GenerateODataControllerAttribute", SourceText.From(attributeText, Encoding.UTF8));
-
+            
             if (!(context.SyntaxReceiver is SyntaxReceiver receiver))
                 return;
 
@@ -52,7 +53,10 @@ namespace OMyEF
                 }
             }
 
+
+#pragma warning disable RS1024 // Compare symbols correctly
             foreach (IGrouping<INamedTypeSymbol, IPropertySymbol> group in propertySymbols.GroupBy(f => f.ContainingType))
+#pragma warning restore RS1024 // Compare symbols correctly
             {
                 string classSource = ProcessClass(group.Key, group.ToList(), attributeSymbol, context);
                 context.AddSource($"{group.Key.Name}_ODataGenerated.cs", SourceText.From(classSource, Encoding.UTF8));

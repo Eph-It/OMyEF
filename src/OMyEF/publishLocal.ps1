@@ -18,11 +18,11 @@ catch{
     $NugetLocation = $FileLocation
 }
 
-$ProjectLocation = "$PSScriptRoot\OMyEF\OMyEF.csproj"
+$ProjectLocation = "$PSScriptRoot\OMyEF"
+Push-Location $ProjectLocation
+dotnet build -c Release 
+dotnet pack -c Release -p:NuspecFile=.\OMyEF.nuspec -p:NuspecBasePath=.\bin\release
 
-dotnet build -c Release $ProjectLocation
-
-dotnet pack -c Release $ProjectLocation
 
 $nupkgFiles = Get-ChildItem "$PSScriptRoot\OMyEF\bin\Release" -Filter '*.nupkg'
 
@@ -36,3 +36,4 @@ foreach($file in $nupkgFiles){
     cmd /c $NugetLocation add $file.FullName -source $LocalNugetFolder
 }
 
+Pop-Location
