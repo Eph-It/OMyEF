@@ -6,7 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
-    <PackageReference Include="OMyEF" Version="0.1.11" />
+    <PackageReference Include="OMyEF.Db" Version="0.2.54" />
+    
   </ItemGroup>
 
 

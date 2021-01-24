@@ -51,14 +51,13 @@ namespace OMyEF
                     public class {ControllerClassName} : ODataController {{
                         private {DbContextType} _dbContext;
                         private OMyEfControllerExtension _controllerExtension;
-                        public {ControllerClassName}({DbContextType} dbContext){{
+                        public {ControllerClassName}({DbContextType} dbContext,OMyEfControllerExtension controllerExtension = null){{
                             _dbContext = dbContext;
-                            _controllerExtension = new OMyEfControllerExtensionImplementation();
-                        }}
-                        public {ControllerClassName}({DbContextType} dbContext, OMyEfControllerExtension controllerExtension){{
-                            _dbContext = dbContext;
-                            _controllerExtension = controllerExtension;
-                        }}
+                            if(controllerExtension == null){{
+                                _controllerExtension = new OMyEfControllerExtensionImplementation();
+                            }}
+                            else {{ _controllerExtension = controllerExtension; }}
+                        }}                        
             ");
         }
 

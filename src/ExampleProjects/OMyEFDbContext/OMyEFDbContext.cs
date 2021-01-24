@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using OMyEF;
+using OMyEF.Db;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMyEFDbContext
 {
+    [GenerateODataController]
     public class TableOne{
         [Key]
         public int Id { get; set; }
@@ -26,7 +27,7 @@ namespace OMyEFDbContext
             : base(options)
         {
         }
-        [GenerateODataController]
+
         public virtual DbSet<TableOne> TableOne { get; set; }
         public virtual DbSet<TableTwo> TableTwo { get; set; }
 
