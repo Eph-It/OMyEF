@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OMyEF.Db\OMyEF.Db.csproj" />
     <ProjectReference Include="..\OMyEF\OMyEF.csproj" />
   </ItemGroup>
 

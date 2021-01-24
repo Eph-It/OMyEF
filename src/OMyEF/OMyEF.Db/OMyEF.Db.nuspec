@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>OMyEF.Db</id>
+        <title>OMyEF.Db - Attributes for Entity Framework DbContext and Models</title>
+        <version>$OMyEfVersion$</version>
+        <authors>Ryan Ephgrave</authors>
+        <copyright>&#169; EphIt. All rights reserved.</copyright>
+        <description>Automatically build OData controllers from Entity Framework DbSets with Code Generation</description>
+        <tags>AspNetCore WebApi OData EntityFramework</tags>
+        <language>en-US</language>
+        <projectUrl>https://github.com/Eph-It/OMyEF</projectUrl>
+        <license type="expression">MIT</license>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        
+    </metadata>
+  <files>
+    <file src=".\netstandard2.0\OMyEF.Db.deps.json" target="lib\netstandard2.0" />
+    <file src=".\netstandard2.0\OMyEF.Db.dll" target="lib\netstandard2.0" />
+    <file src=".\netstandard2.0\OMyEF.Db.pdb" target="lib\netstandard2.0" />
+  </files>
+</package>

@@ -16,9 +16,10 @@ namespace OMyEFTests
         {
             Compilation inputCompilation = CreateCompilation(@"
                 using System;
-                using OMyEF;
+                using OMyEF.Db;
                 using System.Collections.Generic;
                 using Microsoft.EntityFrameworkCore;
+                using System.ComponentModel.DataAnnotations;
                 namespace GeneratorTests
                 {
                     public class Program
@@ -29,6 +30,7 @@ namespace OMyEFTests
                     }
                     public class Authentication
                     {
+                        [Key]
                         public short AuthenticationId { get; set; }
                         public string Name { get; set; }
                     }
@@ -47,7 +49,7 @@ namespace OMyEFTests
             driver = driver.RunGeneratorsAndUpdateCompilation(inputCompilation, out var outputCompilation, out var diagnostics);
 
             Assert.True(diagnostics.IsEmpty);
-            Assert.Equal(3, outputCompilation.SyntaxTrees.Count());
+            Assert.Equal(2, outputCompilation.SyntaxTrees.Count());
             var outputDiagnostics = outputCompilation.GetDiagnostics();
             List<Diagnostic> unexpectedDiagnostics = new List<Diagnostic>();
             foreach(var diagnostic in diagnostics)
@@ -65,7 +67,7 @@ namespace OMyEFTests
             Assert.True(unexpectedDiagnostics.Count == 0);
 
             var runResult = driver.GetRunResult();
-            Assert.Equal(2, runResult.GeneratedTrees.Count());
+            Assert.Single(runResult.GeneratedTrees);
             Assert.Empty(runResult.Diagnostics);
         }
 

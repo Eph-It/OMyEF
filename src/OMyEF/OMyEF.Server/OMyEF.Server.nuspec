@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>OMyEF.Server</id>
+        <title>OMyEF.Server - Server methods for enabling the OData Route on .Net Core APIs</title>
+        <version>$OMyEfVersion$</version>
+        <authors>Ryan Ephgrave</authors>
+        <copyright>&#169; EphIt. All rights reserved.</copyright>
+        <description>Automatically build OData controllers from Entity Framework DbSets with Code Generation</description>
+        <tags>AspNetCore WebApi OData EntityFramework</tags>
+        <language>en-US</language>
+        <projectUrl>https://github.com/Eph-It/OMyEF</projectUrl>
+        <license type="expression">MIT</license>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <dependencies>
+          <group targetFramework=".NETCoreApp3.1">
+              <dependency id="Microsoft.AspNetCore.OData" version="7.5.4" exclude="Build,Analyzers" />
+              <dependency id="Microsoft.OData.Core" version="7.8.1" exclude="Build,Analyzers" />
+              <dependency id="Microsoft.AspNetCore.Routing" version="2.2.2" exclude="Build,Analyzers"/>
+          </group>
+        </dependencies>
+    </metadata>
+  <files>
+    <file src=".\netcoreapp3.1\OMyEF.Server.deps.json" target="lib\netcoreapp3.1" />
+    <file src=".\netcoreapp3.1\OMyEF.Server.dll" target="lib\netcoreapp3.1" />
+    <file src=".\netcoreapp3.1\OMyEF.Server.pdb" target="lib\netcoreapp3.1" />
+  </files>
+</package>

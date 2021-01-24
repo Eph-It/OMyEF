@@ -18,22 +18,29 @@ catch{
     $NugetLocation = $FileLocation
 }
 
-$ProjectLocation = "$PSScriptRoot\OMyEF"
-Push-Location $ProjectLocation
-dotnet build -c Release 
-dotnet pack -c Release -p:NuspecFile=.\OMyEF.nuspec -p:NuspecBasePath=.\bin\release
-
-
-$nupkgFiles = Get-ChildItem "$PSScriptRoot\OMyEF\bin\Release" -Filter '*.nupkg'
+$Version = Get-Content "$PSScriptRoot\publishLocalVersion.txt" -Raw
+$splitVersion = $Version.Split(".")
+$IncreaseVersion = ([int]$splitVersion[-1]) + 1
+$NewVersion = $splitVersion[0] + "." + $splitVersion[1] + "." + $IncreaseVersion
+$NewVersion > "$PSScriptRoot\publishLocalVersion.txt"
 
 $LocalNugetFolder = "$env:USERPROFILE\LocalNugetFiles"
-
 if(-not ( Test-Path $LocalNugetFolder )){
     $null = New-Item $LocalNugetFolder -ItemType Directory
 }
 
-foreach($file in $nupkgFiles){
-    cmd /c $NugetLocation add $file.FullName -source $LocalNugetFolder
-}
+$FoldersToBuild = @('OMyEF', 'OMyEF.Db', 'OMyEF.Server')
+foreach($folder in $FoldersToBuild){
+    Get-ChildItem "$env:USERPROFILE\LocalNugetFiles\$Folder" | Sort-Object CreationTime -desc | Select-Object -Skip 3 | Remove-Item -Force -ErrorAction SilentlyContinue -Recurse
+    Get-ChildItem "$PSScriptRoot\$Folder\bin\Release" -Filter '*.nupkg' -ErrorAction SilentlyContinue | ForEach-Object { Remove-Item $_.FullName -Force }
+    $ProjectLocation = "$PSScriptRoot\$Folder"
+    Push-Location $ProjectLocation
+    dotnet build -c Release 
+    dotnet pack -c Release -p:NuspecFile=".\$($Folder).nuspec" -p:NuspecBasePath=.\bin\release -p:NuspecProperties=OMyEfVersion=$NewVersion
+    $nupkgFiles = Get-ChildItem "$PSScriptRoot\$Folder\bin\Release" -Filter '*.nupkg'
 
-Pop-Location
+    foreach($file in $nupkgFiles){
+        cmd /c $NugetLocation add $file.FullName -source $LocalNugetFolder
+    }
+    Pop-Location    
+}
