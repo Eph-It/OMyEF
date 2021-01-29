@@ -36,6 +36,7 @@ namespace OMyEF
                 using System.Threading.Tasks;
                 using System.Text;
                 using OMyEF.Db;
+                using OMyEF.Server;
             ");
             if(DbSetNamespace != null)
             {
@@ -50,13 +51,17 @@ namespace OMyEF
                     [Route(""{BaseRoute}/[controller]"")]
                     public class {ControllerClassName} : ODataController {{
                         private {DbContextType} _dbContext;
-                        private OMyEfControllerExtension _controllerExtension;
-                        public {ControllerClassName}({DbContextType} dbContext,OMyEfControllerExtension controllerExtension = null){{
+                        private OMyEFControllerExtensions<{DbSetPropertyType}> _controllerExtension;
+                        public {ControllerClassName}({DbContextType} dbContext, OMyEFControllerExtensions<{DbSetPropertyType}> controllerExtension = null){{
                             _dbContext = dbContext;
                             if(controllerExtension == null){{
-                                _controllerExtension = new OMyEfControllerExtensionImplementation();
+                                _controllerExtension = new OMyEFControllerExtensionDefaultImplementation<{DbSetPropertyType}>();
                             }}
                             else {{ _controllerExtension = controllerExtension; }}
+                            if(_controllerExtension.DbContext == null)
+                            {{
+                                _controllerExtension.DbContext = _dbContext;
+                            }}
                         }}                        
             ");
         }
@@ -69,7 +74,7 @@ namespace OMyEF
                 [Route(""{BaseRoute}/[controller]"")]
                 public IQueryable<{DbSetPropertyType}> Get()
                 {{
-                    return _controllerExtension.BeforeGet(_dbContext.{DbSetPropertyName});
+                    return _controllerExtension.Get();
                 }}
             ");
             if(!String.IsNullOrEmpty(KeyName) && !String.IsNullOrEmpty(KeyType))
@@ -79,8 +84,7 @@ namespace OMyEF
                     [Route(""{BaseRoute}/[controller]"")]
                     public {DbSetPropertyType} Get([FromODataUri] {KeyType} key)
                     {{
-                        var dbQuery = _controllerExtension.BeforeGet(_dbContext.{DbSetPropertyName});
-                        return dbQuery.Where(p => p.{KeyName} == key).First();
+                        return _controllerExtension.Get(key);
                     }}
                 ");
             }
@@ -94,10 +98,9 @@ namespace OMyEF
                 public async Task<IActionResult> Post([FromBody] {DbSetPropertyType} item)
                 {{
                     if (!ModelState.IsValid){{ return BadRequest(ModelState); }}
-                    item = _controllerExtension.BeforeInsert(item);
-                    _dbContext.{DbSetPropertyName}.Add(item);
-                    await _dbContext.SaveChangesAsync();
-                    _controllerExtension.AfterInsert(item);
+                    
+                    item = await _controllerExtension.PostAsync(item);
+
                     return Ok(item);
                 }}
             ");
@@ -115,17 +118,13 @@ namespace OMyEF
                     {{
                         return BadRequest(ModelState);
                     }}
-                    var entity = await _dbContext.{DbSetPropertyName}.FindAsync(key);
+                    var entity = await _controllerExtension.PatchAsync(item, key);
 
                     if (entity == null)
                     {{
                         return NotFound();
                     }}
 
-                    item.Patch(entity);
-                    entity = _controllerExtension.BeforeEdit(entity);
-                    await _dbContext.SaveChangesAsync();
-                    _controllerExtension.AfterEdit(entity);
                     return Ok(entity);
                 }}
             ");
@@ -148,12 +147,9 @@ namespace OMyEF
                     {{
                         return BadRequest();
                     }}
-                    _dbContext.Entry(item).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    
-                    item = _controllerExtension.BeforeEdit(item);
-                    await _dbContext.SaveChangesAsync();
-                    _controllerExtension.AfterEdit(item);
-                    return Ok(item);
+                    var entity = await _controllerExtension.PutAsync(item);
+
+                    return Ok(entity);
                 }}
             ");
         }
@@ -166,18 +162,15 @@ namespace OMyEF
                 [Route(""{BaseRoute}/[controller]"")]
                 public async Task<IActionResult> Delete([FromODataUri] {KeyType} key)
                 {{
-                    var item = await _dbContext.{DbSetPropertyName}.FindAsync(key);
-                    if (item == null)
+                    try
+                    {{
+                        await _controllerExtension.DeleteAsync(key);
+                    }}
+                    catch (KeyNotFoundException)
                     {{
                         return NotFound();
                     }}
-                    item = _controllerExtension.BeforeDelete(item);
-                    if(_controllerExtension.CanDelete(item)){{
-                        _dbContext.Remove(item);
-                    }}
                     
-                    await _dbContext.SaveChangesAsync();
-                    _controllerExtension.AfterDelete(item);
                     return StatusCode((int)HttpStatusCode.NoContent);
                 }}
             ");

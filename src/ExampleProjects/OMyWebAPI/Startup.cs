@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using OMyEFDbContext;
 using Microsoft.EntityFrameworkCore;
 using OMyEF;
+using OMyEF.Server;
 
 namespace OMyWebAPI
 {
@@ -31,6 +32,7 @@ namespace OMyWebAPI
         {
             
             services.AddDbContext<MyDbContext>(options => options.UseInMemoryDatabase("OMyDb"));
+            services.AddScoped<OMyEFControllerExtensions<TableThree>, TableThreeOverrides>();
             services.AddControllers();
             services.AddOMyEF();
             services.AddSwaggerGen(c =>
@@ -40,7 +42,7 @@ namespace OMyWebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyDbContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -49,7 +51,12 @@ namespace OMyWebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OMyWebAPI v1"));
             }
 
-            app.UseHttpsRedirection();
+            var newObj = new TableOne();
+            newObj.Name = "testName";
+            dbContext.Add(newObj);
+            dbContext.SaveChanges();
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
