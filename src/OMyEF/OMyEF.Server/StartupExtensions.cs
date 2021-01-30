@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.OData.Edm;
 using Microsoft.AspNet.OData.Builder;
 using System.Linq;
+using OMyEF.Db;
+using System;
+using System.Reflection;
 
 namespace OMyEF
 {
@@ -17,7 +20,18 @@ namespace OMyEF
         public static void AddOMyEFRoute<T>(this IEndpointRouteBuilder routeBuilder)
         {
             routeBuilder.Select().Filter().OrderBy().Count().MaxTop(10);
-            routeBuilder.MapODataRoute("odata", "odata", GetEdmModel<T>());
+            string routePrefixName = "odata";
+            foreach(var att in typeof(T).GetCustomAttributes())
+            {
+                if(att is GenerateODataAttribute attrib)
+                {
+                    if (!String.IsNullOrEmpty(attrib.BaseRoute))
+                    {
+                        routePrefixName = attrib.BaseRoute;
+                    }
+                }
+            }
+            routeBuilder.MapODataRoute(routePrefixName, routePrefixName, GetEdmModel<T>());
         }
         private static IEdmModel GetEdmModel<T>()
         {

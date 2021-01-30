@@ -108,5 +108,23 @@ namespace OMyWebAPITests
                 .FindEntryAsync();
             newEntry.Created.Should().BeAfter(goodDate);
         }
+        [Fact]
+        public async Task ShouldBeUnauthorizedAsync()
+        {
+            string response = "";
+            try
+            {
+                var entry = await _client
+                 .For<TableFour>()
+                 .Set(new { Name = "EntryShouldThrow" })
+                 .InsertEntryAsync();
+            }
+            catch (WebRequestException e)
+            {
+                var test = e;
+                response = e.Response;
+            }
+            response.Should().Contain("No authenticationScheme was specified, and there was no DefaultChallengeScheme found.");
+        }
     }
 }

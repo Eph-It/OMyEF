@@ -5,9 +5,12 @@ using System.Text;
 namespace OMyEF.Db
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class GenerateODataRouteAttribute : Attribute
+    public class GenerateODataAttribute : Attribute
     {
-        public GenerateODataRouteAttribute() { }
+        public GenerateODataAttribute() { }
         public string BaseRoute { get; set; } = "odata";
+        public bool Authorize { get; set; }
+        public string AuthorizePolicy { get; set; }
+        public string AuthorizeRoles { get; set; }
     }
 }

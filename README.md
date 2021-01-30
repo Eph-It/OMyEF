@@ -95,7 +95,7 @@ Once set up, you can run your WebAPI and start querying your data at ```<webApiU
 
 ### Version: 0.2
 - [x] Can perform edits on tables
-- [x] Use dependency injection and an interface to support BeforeEdit & AfterEdit extensions (ie, BeforeEdit to modify the data, like add a DateModified and AfterEdit to perform more data)
+- [x] Use dependency injection and an interface to support custom scenarios
 - [x] Support changing odata route
 
 ### Version 0.3

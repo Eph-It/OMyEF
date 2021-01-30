@@ -25,6 +25,13 @@ namespace OMyEFDbContext
         public string Name { get; set; }
         public DateTime Created { get; set; }
     }
+    [GenerateODataController(Authorize =true)]
+    public class TableFour
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
     public class MyDbContext : DbContext
     {
         public MyDbContext()
@@ -39,6 +46,7 @@ namespace OMyEFDbContext
         public virtual DbSet<TableOne> TableOne { get; set; }
         public virtual DbSet<TableTwo> TableTwo { get; set; }
         public virtual DbSet<TableThree> TableThree { get; set; }
+        public virtual DbSet<TableFour> TableFour { get; set; }
 
     }
 }

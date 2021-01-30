@@ -7,5 +7,8 @@ namespace OMyEF.Db
         public GenerateODataControllerAttribute()
         {
         }
+        public bool Authorize { get; set; }
+        public string AuthorizePolicy { get; set; }
+        public string AuthorizeRoles { get; set; }
     }
 }

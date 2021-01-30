@@ -22,6 +22,9 @@ namespace OMyEF
         public string DbSetNamespace { get; set; }
         public string DbSetPropertyName { get; set; }
         public string DbSetPropertyType { get; set; }
+        public bool Authorize { get; set; }
+        public string AuthorizePolicy { get; set; }
+        public string AuthorizeRoles { get; set; }
 
         private void AddHeader(StringBuilder stringBuilder)
         {
@@ -37,6 +40,7 @@ namespace OMyEF
                 using System.Text;
                 using OMyEF.Db;
                 using OMyEF.Server;
+                using Microsoft.AspNetCore.Authorization;
             ");
             if(DbSetNamespace != null)
             {
@@ -71,6 +75,7 @@ namespace OMyEF
             stringBuilder.AppendLine(@$"
                 [HttpGet]
                 [EnableQuery]
+                {AddAuthorizeAttribute("Get")}
                 [Route(""{BaseRoute}/[controller]"")]
                 public IQueryable<{DbSetPropertyType}> Get()
                 {{
@@ -81,6 +86,7 @@ namespace OMyEF
             {
                 stringBuilder.AppendLine($@"
                     [HttpGet]
+                    {AddAuthorizeAttribute("Get")}
                     [Route(""{BaseRoute}/[controller]"")]
                     public {DbSetPropertyType} Get([FromODataUri] {KeyType} key)
                     {{
@@ -94,6 +100,7 @@ namespace OMyEF
         {
             stringBuilder.AppendLine(@$"
                 [HttpPost]
+                {AddAuthorizeAttribute("Post")}
                 [Route(""{BaseRoute}/[controller]"")]
                 public async Task<IActionResult> Post([FromBody] {DbSetPropertyType} item)
                 {{
@@ -111,6 +118,7 @@ namespace OMyEF
             if (String.IsNullOrEmpty(KeyName) && String.IsNullOrEmpty(KeyType)) { return; }
             stringBuilder.AppendLine(@$"
                 [HttpPatch]
+                {AddAuthorizeAttribute("Patch")}
                 [Route(""{BaseRoute}/[controller]"")]
                 public async Task<IActionResult> Patch([FromODataUri] {KeyType} key, Delta<{DbSetPropertyType}> item)
                 {{
@@ -136,6 +144,7 @@ namespace OMyEF
             if (String.IsNullOrEmpty(KeyName) && String.IsNullOrEmpty(KeyType)) { return; }
             stringBuilder.AppendLine(@$"
                 [HttpPut]
+                {AddAuthorizeAttribute("Put")}
                 [Route(""{BaseRoute}/[controller]"")]
                 public async Task<IActionResult> Put([FromODataUri] {KeyType} key, {DbSetPropertyType} item)
                 {{
@@ -159,6 +168,7 @@ namespace OMyEF
             if (String.IsNullOrEmpty(KeyName) && String.IsNullOrEmpty(KeyType)) { return; }
             stringBuilder.AppendLine($@"
                 [HttpDelete]
+                {AddAuthorizeAttribute("Delete")}
                 [Route(""{BaseRoute}/[controller]"")]
                 public async Task<IActionResult> Delete([FromODataUri] {KeyType} key)
                 {{
@@ -179,6 +189,21 @@ namespace OMyEF
         private void AddFooter(StringBuilder stringBuilder)
         {
             stringBuilder.Append("}}");
+        }
+
+        private string AddAuthorizeAttribute(string action)
+        {
+            if (!Authorize) { return ""; }
+            var authAttribute = "[Authorize(";
+            if (!String.IsNullOrEmpty(AuthorizeRoles))
+            {
+                authAttribute = $"{authAttribute}Roles = \"{AuthorizeRoles}\"";
+            }
+            else if (!String.IsNullOrEmpty(AuthorizePolicy))
+            {
+                authAttribute = $"{authAttribute}Policy = \"{AuthorizePolicy}\"";
+            }
+            return authAttribute + ")]";
         }
 
         public string Build()
