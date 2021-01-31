@@ -10,5 +10,6 @@ namespace OMyEF.Db
         public bool Authorize { get; set; }
         public string AuthorizePolicy { get; set; }
         public string AuthorizeRoles { get; set; }
+        public string SetName { get; set; }
     }
 }

@@ -36,9 +36,15 @@ namespace OMyEF
                 {
                     var dbSetKey = controller.Value.GetDbSetKey();
                     var controllerOdataAttribute = GetGenerateODataControllerAttribute(controller.Value);
+                    string setName = "";
+                    setName = controllerOdataAttribute?.GetPropertyValue<string>("SetName");
+                    if (String.IsNullOrEmpty(setName))
+                    {
+                        setName = controller.Key;
+                    }
                     var controllerSetting = new OMyEFControllerBuilder()
                     {
-                        DbSetPropertyName = controller.Key,
+                        ODataSetName = setName,
                         DbSetPropertyType = controller.Value.Name,
                         BaseRoute = GetBaseRoute(odataAttribute),
                         DbContextType = dbContextType.Name,
@@ -54,7 +60,6 @@ namespace OMyEF
                     context.AddSource(controller.Key + "_ODataGenerated.cs", SourceText.From(source, Encoding.UTF8));
                 }
             }
-
         }
         public void Initialize(GeneratorInitializationContext context)
         {

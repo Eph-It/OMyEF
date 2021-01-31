@@ -10,7 +10,7 @@ namespace OMyEF
         {
             get
             {
-                return DbSetPropertyName + "Controller";
+                return ODataSetName + "Controller";
             }
         }
         public string ControllerNamespace { get; set; } = "OMyEF.GeneratedControllers";
@@ -20,7 +20,7 @@ namespace OMyEF
         public string DbContextNamespace { get; set; }
         public string DbContextType { get; set; }
         public string DbSetNamespace { get; set; }
-        public string DbSetPropertyName { get; set; }
+        public string ODataSetName { get; set; }
         public string DbSetPropertyType { get; set; }
         public bool Authorize { get; set; }
         public string AuthorizePolicy { get; set; }

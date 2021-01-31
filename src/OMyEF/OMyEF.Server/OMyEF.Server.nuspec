@@ -17,6 +17,7 @@
               <dependency id="Microsoft.AspNetCore.OData" version="7.5.4" exclude="Build,Analyzers" />
               <dependency id="Microsoft.OData.Core" version="7.8.1" exclude="Build,Analyzers" />
               <dependency id="Microsoft.AspNetCore.Routing" version="2.2.2" exclude="Build,Analyzers"/>
+			  <dependency id="OMyEF.Db" version="$OMyEfVersion$" />
           </group>
         </dependencies>
     </metadata>

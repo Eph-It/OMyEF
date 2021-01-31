@@ -38,6 +38,7 @@ namespace OMyEF
             var odataBuilder = new ODataConventionModelBuilder();
             foreach (var prop in typeof(T).GetProperties())
             {
+                string addPropName = prop.Name;
                 bool addProp = false;
                 if (prop.PropertyType.IsGenericType && prop.PropertyType.GenericTypeArguments.Count() == 1)
                 {
@@ -45,17 +46,22 @@ namespace OMyEF
                     object[] attrs = baseType.GetCustomAttributes(true);
                     foreach (object attr in attrs)
                     {
-                        if (attr.GetType().Name == "GenerateODataControllerAttribute")
+                        if (attr is GenerateODataControllerAttribute genAttr)
                         {
                             addProp = true;
+                            if(!String.IsNullOrEmpty(genAttr.SetName))
+                            {
+                                addPropName = genAttr.SetName;
+                            }
                         }
                     }
                 }
                 if (addProp)
                 {
+
                     var method = typeof(ODataConventionModelBuilder).GetMethod(nameof(ODataConventionModelBuilder.EntitySet));
                     var genericMethod = method.MakeGenericMethod(prop.PropertyType.GenericTypeArguments[0]);
-                    genericMethod.Invoke(odataBuilder, new[] { prop.Name });
+                    genericMethod.Invoke(odataBuilder, new[] { addPropName });
                 }
 
 
